@@ -48,7 +48,7 @@ router.get('/similar',function (req,res) {
     let id=req.query.jobid;
     let sql=`select catagory,jobtype from cgc_post where id=${id}`;
     connection.query(sql,function (err,result) {
-        if (err){
+        if (err || !result.length){
             res.end();
         }else {
             let {catagory,jobtype}=JSON.parse(JSON.stringify(result))[0];
