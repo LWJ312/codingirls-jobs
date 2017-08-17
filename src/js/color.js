@@ -22,9 +22,8 @@ function listen(){
 }
 
 function color() {
-
-    var a =document.getElementById("rightSideWindow");
-    a.innerHTML=`
+    var rightWindow =document.getElementById("rightSideWindow");
+    rightWindow.innerHTML=`
 <br><div>
          <b style="font-size: 30px;margin-left: 18px">Pure Color</b><br><br>
          <div class="container-fluid">

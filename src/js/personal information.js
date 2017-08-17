@@ -1,17 +1,17 @@
 function WhetherBan() {
-    var a = document.getElementById("personalInfoCheckBox").getElementsByTagName("input");
-    var b = document.getElementById("button");
-    if (a[0].checked === false) {
-        b.disabled = true;
+    var infoCheckBox = document.getElementById("personalInfoCheckBox").getElementsByTagName("input");
+    var button = document.getElementById("button");
+    if (infoCheckBox[0].checked === false) {
+        button.disabled = true;
     }
-    else if (a[0].checked === true) {
-        b.disabled = false;
+    else if (infoCheckBox[0].checked === true) {
+        button.disabled = false;
     }
     return;
 }
 function modifyPersonalInfo() {
-    var c = document.getElementById("rightSideWindow");
-    c.innerHTML="<br>\n" +
+    var rightWindow = document.getElementById("rightSideWindow");
+    rightWindow.innerHTML="<br>\n" +
         "            <div>\n" +
         "            <div class=\"form-group\">\n" +
         "                <label for=\"InputcompanyName\" style=\"font-size: 30px\">Company Name</label>\n" +

@@ -1,105 +1,105 @@
 function confirmation() {
     document.getElementById("InputNewPassword2").blur();
-    var a =document.getElementById("InputNewPassword");
-    var b =document.getElementById("InputNewPassword2");
-    var d=document.getElementById("newPassword2");
-    var e=document.getElementById("newPassword2").getElementsByTagName("p");
-    var f = document.getElementById("passwordOK");
-    f.checked=false;
-    if (a.value===b.value||b.value===""){
-        if(e[0]){
-            d.removeChild(e[0]);
+    var newPassword =document.getElementById("InputNewPassword");
+    var passwordAgain =document.getElementById("InputNewPassword2");
+    var passwordAgainDiv =document.getElementById("newPassword2");
+    var passwordAgainDivP=document.getElementById("newPassword2").getElementsByTagName("p");
+    var checkBox = document.getElementById("passwordOK");
+    checkBox.checked=false;
+    if (newPassword.value===passwordAgain.value||passwordAgain.value===""){
+        if(passwordAgainDivP[0]){
+            passwordAgainDiv.removeChild(passwordAgainDivP[0]);
         }
 
     }
-    else if  (a.value !== b.value&&e.length===0){
-        d.innerHTML+="<p style='color: red'>\n" +
+    else if  (newPassword.value !== passwordAgain.value&&passwordAgainDivP.length===0){
+        passwordAgainDiv.innerHTML+="<p style='color: red'>\n" +
             " <small><i>This password should be the same as last input!!!</i></small>\n" +
             " </p>"
     }
 }
 function passwordIsCorrect1() {
     document.getElementById("InputCurrentPassword").blur();
-    var a =/^[a-zA-Z0-9_!@#$%^&*]{6,16}$/;
-    var b = document.getElementById("InputCurrentPassword");
-    var c = document.getElementById("oldpassword");
-    var d = document.getElementById("oldpassword").getElementsByTagName("p");
-    if (a.test(b.value)||b.value===""){
-        if(d[0]){
-            c.removeChild(d[0]);
+    var passwordFormat =/^[a-zA-Z0-9_!@#$%^&*]{6,16}$/;
+    var currentPassword = document.getElementById("InputCurrentPassword");
+    var oldPasswordDiv = document.getElementById("oldpassword");
+    var oldPasswordDivP = document.getElementById("oldpassword").getElementsByTagName("p");
+    if (passwordFormat.test(currentPassword.value)||currentPassword.value===""){
+        if(oldPasswordDivP[0]){
+            oldPasswordDiv.removeChild(oldPasswordDivP[0]);
         }
     }
-    else if (a.test(b.value)===false&& d.length===0){
-        c.innerHTML+="<p style='color: red'>\n" +
+    else if (passwordFormat.test(currentPassword.value)===false&& oldPasswordDivP.length===0){
+        oldPasswordDiv.innerHTML+="<p style='color: red'>\n" +
             " <small><i>Password's format is wrong!!!</i></small>\n" +
             " </p>"
     }
 }
 function passwordIsCorrect2() {
     document.getElementById("InputNewPassword").blur();
-    var a =/^[a-zA-Z0-9_!@#$%^&*]{6,16}$/;
-    var b = document.getElementById("InputNewPassword");
-    var c = document.getElementById("newPassword");
-    var d = document.getElementById("newPassword").getElementsByTagName("p");
-    var e = document.getElementById("passwordOK");
-    e.checked=false;
-    if (a.test(b.value)||b.value===""){
-        if(d[0]){
-            c.removeChild(d[0]);
+    var passwordFormat =/^[a-zA-Z0-9_!@#$%^&*]{6,16}$/;
+    var newPassword = document.getElementById("InputNewPassword");
+    var newPasswordDiv = document.getElementById("newPassword");
+    var newPasswordDivP = document.getElementById("newPassword").getElementsByTagName("p");
+    var checkBox = document.getElementById("passwordOK");
+    checkBox.checked=false;
+    if (passwordFormat.test(newPassword.value)||newPassword.value===""){
+        if(newPasswordDivP[0]){
+            newPasswordDiv.removeChild(newPasswordDivP[0]);
         }
     }
-    else if (a.test(b.value)===false&& d.length===0){
-        c.innerHTML+="<p style='color: red'>\n" +
+    else if (passwordFormat.test(newPassword.value)===false&& newPasswordDivP.length===0){
+        newPasswordDiv.innerHTML+="<p style='color: red'>\n" +
             " <small><i>Password's format is wrong!!!</i></small>\n" +
             " </p>"
     }
 
 }
 function finalJudge(){
-    var a =document.getElementById("InputNewPassword");
-    var b =document.getElementById("InputCurrentPassword");
-    var b1 =document.getElementById("oldpassword").getElementsByTagName("p");
-    var c = document.getElementById("newPassword");
-    var d = document.getElementById("newPassword").getElementsByTagName("p");
-    var e = document.getElementById("passwordOK");
-    var g=document.getElementById("InputNewPassword2");
-    var h=document.getElementById("newPassword2");
-    var h1=document.getElementById("newPassword2").getElementsByTagName("p");
-    var i = document.getElementById("button");
+    var newPassword =document.getElementById("InputNewPassword");
+    var currentPassword =document.getElementById("InputCurrentPassword");
+    var oldPasswordDivP =document.getElementById("oldpassword").getElementsByTagName("p");
+    var newPasswordDiv = document.getElementById("newPassword");
+    var newPasswordDivP = document.getElementById("newPassword").getElementsByTagName("p");
+    var checkBox = document.getElementById("passwordOK");
+    var passwordAgain=document.getElementById("InputNewPassword2");
+    var passwordAgainDiv=document.getElementById("newPassword2");
+    var passwordAgainDivP=document.getElementById("newPassword2").getElementsByTagName("p");
+    var button = document.getElementById("button");
 
-    if(a.value!==b.value||b.value===""){
-        if(d[0]){
-            c.removeChild(d[0]);
+    if(newPassword.value!==currentPassword.value||currentPassword.value===""){
+        if(newPasswordDivP[0]){
+            newPasswordDiv.removeChild(newPasswordDivP[0]);
         }
     }
-    else if (a.value===b.value && d.length===0){
-        c.innerHTML+="<p style='color: red'>\n" +
+    else if (newPassword.value===currentPassword.value && newPasswordDivP.length===0){
+        newPasswordDiv.innerHTML+="<p style='color: red'>\n" +
         " <small><i>The new password should be the different from the old!!!</i></small>\n" +
         " </p>"
-        e.checked=false;
+        checkBox.checked=false;
     }
-    if (a.value===g.value || g.value===""){
-        if(h1[0]){
-            h.removeChild(h1[0]);
+    if (newPassword.value===passwordAgain.value || passwordAgain.value===""){
+        if(passwordAgainDivP[0]){
+            passwordAgainDiv.removeChild(passwordAgainDivP[0]);
         }
     }
-    else if (a.value!==g.value &&h1.length===0){
-        h.innerHTML+="<p style='color: red'>\n" +
+    else if (newPassword.value!==passwordAgain.value &&passwordAgainDivP.length===0){
+        passwordAgainDiv.innerHTML+="<p style='color: red'>\n" +
             " <small><i>This password should be the same as last input!!!</i></small>\n" +
             " </p>"
-        e.checked=false;
+        checkBox.checked=false;
     }
-    if(a.value!==""&&b.value!==""&&g.value!==""&&e.checked===true&&b1.length===0&&d.length===0&&h1.length===0){
-        i.disabled=false;
+    if(newPassword.value!==""&&currentPassword.value!==""&&passwordAgain.value!==""&&checkBox.checked===true&&oldPasswordDivP.length===0&&newPasswordDivP.length===0&&passwordAgainDivP.length===0){
+        button.disabled=false;
     }
-    else if(a.value===""||b.value===""||g.value===""||e.checked===false||b1.length!==0||d.length!==0||h1.length!==0){
-        i.disabled=true;
+    else if(newPassword.value===""||currentPassword.value===""||passwordAgain.value===""||checkBox.checked===false||oldPasswordDivP.length!==0||newPasswordDivP.length!==0||passwordAgainDivP.length!==0){
+        button.disabled=true;
     }
 
 }
 function modifyPassword() {
-    var a = document.getElementById("rightSideWindow");
-    a.innerHTML="<br>\n" +
+    var rightWindow = document.getElementById("rightSideWindow");
+    rightWindow.innerHTML="<br>\n" +
         "            <div >\n" +
         "            <div class=\"form-group\" id='oldpassword'>\n" +
         "                <label for=\"InputCurrentPassword\" style=\"font-size: 30px\">Current Password</label>\n" +

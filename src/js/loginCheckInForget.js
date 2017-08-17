@@ -1,9 +1,9 @@
 function loginCheckInForget(){
-    var a = document.getElementById("email");
-    var b = document.getElementById("restore");
-    var c = document.getElementById("emails").getElementsByTagName("p");
-    if (a.value!=="" && c.length===0){
-        b.disabled=false;
+    var email = document.getElementById("email");
+    var emailDivP = document.getElementById("emails").getElementsByTagName("p");
+    var restore = document.getElementById("restore");
+    if (email.value!=="" && emailDivP.length===0){
+        restore.disabled=false;
     }
-    else b.disabled=true;
+    else restore.disabled=true;
 }

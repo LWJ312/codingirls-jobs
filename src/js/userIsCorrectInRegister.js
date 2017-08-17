@@ -1,17 +1,17 @@
 function userIsCorrectInRegister() {
     document.getElementById('userName').blur();
-    var a=/^[a-zA-Z0-9_]{6,18}$/;
-    var b =document.getElementById("userName");
-    var d =document.getElementById("user");
-    var e =document.getElementById("user").getElementsByTagName("p");
-     if  (a.test(b.value)||b.value===""){
-         if(e[0]){
-             d.removeChild(e[0]);
+    var userNameFormat=/^[a-zA-Z0-9_]{6,18}$/;
+    var userName =document.getElementById("userName");
+    var userNameDiv =document.getElementById("user");
+    var userNameDivP =document.getElementById("user").getElementsByTagName("p");
+     if  (userNameFormat.test(userName.value)||userName.value===""){
+         if(userNameDivP[0]){
+             userNameDiv.removeChild(userNameDivP[0]);
          }
     }
-    else if (a.test(b.value)===false && e.length===0){
-        d.innerHTML+="<p style='color: red'>\n" +
-            " <small><i>User name's format is wrong!!!</i></small>\n" +
+    else if (userNameFormat.test(userName.value)===false && userNameDivP.length===0){
+        userNameDiv.innerHTML+="<p style='color: red'>\n" +
+            " <small><i>User name's format is wrong !!!</i></small>\n" +
             " </p>"
     }
 
