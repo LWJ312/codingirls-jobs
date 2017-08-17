@@ -59,7 +59,7 @@ function Redirect() //使用函数进行跳转
 }
 
 function intoIndex() { //进入首页，调用该函数，判断是否已经登录
-    let url = 'http://47.93.200.205:8080/index';
+    let url = 'http://47.93.200.205:8080/user/index';
     $.ajax({
         url: `${url}`,
         type: 'GET',
