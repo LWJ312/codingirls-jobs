@@ -3,7 +3,7 @@ function listen(){
     for(let i=1; i<=20; i++){
         console.log($(`#color-${i}`).attr('id'))
         document.getElementById(`color-${i}`).addEventListener('click', function(){
-            let url = `http://localhost:3334/user/set/color`;
+            let url = `http://47.93.200.205:8080/user/set/color`;
             $.ajax({
                 url:  `${url}`,
                 type: 'POST',
