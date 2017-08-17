@@ -9,8 +9,7 @@ app.engine('html', ejs.renderFile);
 app.set("view engine", "html");
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
-app.use(express.static('src'));
-app.use(express.static('images'));
+app.use(express.static('./src'));
 global.connection = mysql.createConnection({
     host     : 'localhost',
     user     : 'root',
@@ -36,8 +35,9 @@ app.get('/',function (req,res) {
         res.locals.data={render:false};
     else
         res.locals.data={username:req.session.username,render:true};
-    res.render('homepage.html');
-})
+    res.redirect('/html/HOME.html');
+});
 app.use('/account',require('./routes/accountRouter.js'));
+app.use('/user',require('./routes/login_up_in_out/validation.js'));
 app.use('/post',require('./routes/postRouter.js'));
 app.listen(8080);
