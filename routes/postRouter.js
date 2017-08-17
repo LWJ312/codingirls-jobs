@@ -12,7 +12,7 @@ router.get('/list',function (req,res) {
     sql_count=catagory==''?sql_count:sql_count+` and catagory='${catagory}'`;
     sql+=' and status=0 and edate>unix_timestamp(now()) order by sdate desc';
     sql_count+=' and status=0 and edate>unix_timestamp(now())';
-    sql=isNaN(page)?sql:sql+` limit 20 offset ${page*20}`;
+    sql=isNaN(page)?sql+' limit 20 offset 0':sql+` limit 20 offset ${page*20}`;
     connection.query(sql,function (err,result) {
         if (err){
             res.end();
@@ -52,7 +52,7 @@ router.get('/similar',function (req,res) {
             res.end();
         }else {
             let {catagory,jobtype}=JSON.parse(JSON.stringify(result))[0];
-            let sql_query=`select id,count,title,company,catagory,jobtype,salary,from_unixtime(sdate,'%Y-%m-%d') as sdate,country,city,description,age,number,tags,apply from cgc_post where status=0 and edate>unix_timestamp(now()) and catagory='${catagory}' and jobtype='${jobtype}' limit 10`
+            let sql_query=`select id,count,title,company,catagory,jobtype,salary,from_unixtime(sdate,'%Y-%m-%d') as sdate,country,city,description,age,number,tags,apply from cgc_post where status=0 and edate>unix_timestamp(now()) and catagory='${catagory}' and jobtype='${jobtype}' limit 12`
             connection.query(sql_query,function (err,result) {
                 if(err){
                     res.end();
