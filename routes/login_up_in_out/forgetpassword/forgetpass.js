@@ -1,10 +1,7 @@
 let express = require('express');
 let crypto = require('crypto'); //加密库
-let app = express();
+let app = express.Router();
 let mailer = require('../sendemail/mailer'); //调用
-
-var mysql = require('mysql');
-var connection = mysql.createConnection({ host: 'localhost', user: 'root', password: '', database: 'zpinfo' });
 
 app.post('/password', function(req, res) {
     let useremail = req.body.useremail; //得到邮箱

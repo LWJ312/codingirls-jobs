@@ -1,38 +1,7 @@
-let express = require('express');
-let crypto = require('crypto'); //加密库
-let bodyParser = require('body-parser');
-let cookieParser = require('cookie-parser'); //session cookie
-let session = require('express-session');
-let mailer = require('./sendemail/mailer'); //调用
-let path = require('path')
-
-
-let app = express();
-
-app.use(express.static('../../src')); ///设置静态文件目录
-
-app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: false }));
-app.use(cookieParser('session'));
-app.use(session({
-    secret: 'keyboard cat'
-}));
-
-
-///连接数据库   
-var mysql = require('mysql');
-var connection = mysql.createConnection({ host: 'localhost', user: 'root', password: '', database: 'zpinfo' });
-
-app.all('*', function(req, res, next) {
-    res.header("Access-Control-Allow-Origin", "*");
-    res.header("Access-Control-Allow-Headers", "Content-Type,Content-Length, Authorization, Accept,X-Requested-With");
-    res.header("Access-Control-Allow-Methods", "PUT,POST,GET,DELETE,OPTIONS");
-    res.header("X-Powered-By", ' 3.2.1')
-    if (req.method == "OPTIONS")
-        res.send(200 /*让options请求快速返回*/ );
-    else
-        next();
-});
+let express=require('express');
+let app = express.Router();
+const crypto = require('crypto');
+const mailer = require('./sendemail/mailer.js');
 app.use(function(req, res, next) { ///使用中间件来进行session的操作
     if (!req.session.user) {
         req.session.user = {} ///如果session不存在，则创建一个空的user,如果存在，则不进行一定的操作
@@ -42,7 +11,7 @@ app.use(function(req, res, next) { ///使用中间件来进行session的操作
     next()
 });
  
-app.post('/user/signup/username', function(req, res) { ///失去焦点，立即发送验证用户名存在请求
+app.post('/signup/username', function(req, res) { ///失去焦点，立即发送验证用户名存在请求
     //验证长度---
     let username = req.body.username;
     if (username.length >= 6 && username.length <= 18) {
@@ -63,7 +32,7 @@ app.post('/user/signup/username', function(req, res) { ///失去焦点，立即�
 
 
 
-app.post('/user/signup', function(req, res) { //注册函数
+app.post('/signup', function(req, res) { //注册函数
     let email = req.body.useremail || '';
     let username = req.body.username || '';
     var md5 = crypto.createHash('md5');
@@ -129,7 +98,7 @@ app.post('/user/signup', function(req, res) { //注册函数
 });
 
 //当用户为验证，需要再次获得邮箱验证的时候---点击发送邮件按钮（包括过期验证和未验证）--都是通过user这个对象进行传递的，所有需要前端发送邮箱信息给后端
-app.post('/user/againemail', function(req, res) {
+app.post('/againemail', function(req, res) {
     let email = req.query.email || ''; //通过邮箱去查找用户
     console.log(email);
     let sql = `select * from usertable where email='${email}'`; //得到用户所有信息
@@ -163,7 +132,7 @@ function comfirmmail(user) {
         //保证激活码不会重复
         user.activeToken = buf.toString('hex');
         user.activeExpires = Date.now() + 3600 * 1000 * 2; //设置邮箱验证有效时间，默认为1小时
-        var link = 'http://localhost:3334/account/active?token=' +
+        var link = 'http://47.93.200.205:8080/user/active?token=' +
             user.activeToken;
         //发送邮件
         mailer({
@@ -183,7 +152,7 @@ function comfirmmail(user) {
     })
 }
  
-app.get('/account/active', function(req, res) { ///得到验证码，访问验证码
+app.get('/active', function(req, res) { ///得到验证码，访问验证码
     let actoken = req.query.token;
     let sql = `select * from usertable where activetoken='${actoken}'`;
     connection.query(sql, function(err, result) {
@@ -224,7 +193,7 @@ function name_or_email(username) { ///判断输入的是用户名还是密码
     return index === -1 ? 1 : 0;
 }
 
-app.post('/user/login', function(req, res) { ///用户登录
+app.post('/login', function(req, res) { ///用户登录
     //填写信息 --> 发送账号密码 -->验证匹配密码(邮箱存在 或者不存在) -->(存在)登陆成功 -->进入首页
     //验证 邮箱 || 用户名 
     let username = req.body.username || '';
@@ -244,15 +213,12 @@ app.post('/user/login', function(req, res) { ///用户登录
 });
 
 app.get('/index', function(req, res) { //进入首页，查看登录状态
-    console.log('242----' + req.session.user);
-    if (req.session.user.info !== '') { //如果email不为空，说明登录
-        console.log('244--- ' + req.session);
-        let user = req.session.user;
+    if (req.session.username) { //如果email不为空，说明登录
+        let user = req.session.username;
         //res.send(`Hello, ${user.info}`);
-        res.json({code:0, msg:`${user.info}`})
+        res.json({code:0, msg:`${user}`})
     } else {
-        res.json({code:1,msg:'Sorry, you\'re not logined in..Please try to login in'})
-        //res.send('Sorry, you\'re not logined in..Please try to login in');
+        res.json({code:1,msg:'Sorry, you\'re not logined in..Please try to login in'});
     }
 });
 
@@ -282,9 +248,9 @@ function confirmUser(username, password, req, res, flag) { ///验证用户信息
             if (password === pass) { //这里的操作应该是将数据添加到session中
                 if (parseInt(activity) === 1) {
                     console.log('277 -- 密码验证成功');
-                    req.session.user['info'] = `${userInfo}`; //设置session
+                    req.session.username = `${userInfo}`; //设置session
                     console.log(req.session.user);
-                    res.json({ code: 0, msg: `Hello ${req.session.user['info']}, Welcome here` });
+                    res.json({ code: 0, msg: `Hello ${req.session.username}, Welcome here` });
                 } else {
                     res.json({ code: 3, msg: '还未验证，请发送邮件进行验证' });
                     console.log('283 --- 还未验证，请发送邮件进行验证');
@@ -300,8 +266,8 @@ function confirmUser(username, password, req, res, flag) { ///验证用户信息
 
 
 //==用户细节信息
-app.post('/user/detail', function(req, res) {
-    let username = req.session.user['info'];
+app.post('/detail', function(req, res) {
+    let username = req.session.username;
     //console.log(username);
     let company_name = req.body.companyname
     let company_address = req.body.companyaddress
@@ -321,8 +287,8 @@ app.post('/user/detail', function(req, res) {
 
 })
 
-app.get('/user/detail', function(req, res) {
-    let username = req.session.user['info'];
+app.get('/detail', function(req, res) {
+    let username = req.session.username;
     //console.log(username);
     //设置sql
     let sql = `select * from usertable where username='${username}'`;
@@ -346,7 +312,7 @@ app.get('/user/detail', function(req, res) {
 })
 
 //密码修改操作
-app.post('/user/set/password', function(req,res){
+app.post('/set/password', function(req,res){
     let username = req.body.username.slice(1);
     let  md5 = crypto.createHash('md5');
 
@@ -379,8 +345,8 @@ app.post('/user/set/password', function(req,res){
     })
 })
 ///设置用户颜色
-app.post('/user/set/color', function(req,res){
-    let username = req.session.user['info']; //得到session
+app.post('/set/color', function(req,res){
+    let username = req.session.username; //得到session
     //console.log('384-- ' + username)
     //let username = req.body.username
     let color = req.body.color;
@@ -395,8 +361,8 @@ app.post('/user/set/color', function(req,res){
     })
 })
 
-app.get('/user/get/color', function(req, res){
-    let username = req.session.user['info']; //得到session;
+app.get('/get/color', function(req, res){
+    let username = req.session.username; //得到session;
     let sql = `select usercolor from usertable where username='${username}'`;
     connection.query(sql, function(err, result){
         if(err){
@@ -409,7 +375,7 @@ app.get('/user/get/color', function(req, res){
 
 //=================登出
 //清除session
-app.get('/user/logout', function(req, res) {
+app.get('/logout', function(req, res) {
     req.session.destroy(); //销毁
     //console.log(req.session); === undefined
     //console.log(req.session.user);
@@ -426,4 +392,4 @@ app.get('/user/logout', function(req, res) {
 let forget = require('./forgetpassword/forgetpass');
 app.use('/forget', forget);
 //============================监听
-app.listen(3334);
+module.exports=app;
