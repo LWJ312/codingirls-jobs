@@ -173,7 +173,7 @@ function loadHotJobs(data) {
             </div>
             <hr style="height:1px;margin-top: 8%;margin-bottom:3%;border:none;border-top:1px solid #c0c0c0;" />
             <div style="font-size:18px; padding-bottom: 2px;color:orangered"><p>月薪: ${job.salary}</p ></div>
-            <div style=" height: 10%;margin-bottom: 12%">
+            <div style=" height: 10%;margin-bottom: 6%">
                <span class="company_name" style="color: #999999;font-size: 18px"><p>${job.company}</p ></span>
             </div>
             <div style="font-size: 18px;color:#999999">

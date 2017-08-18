@@ -1,4 +1,4 @@
-function postInfo() {
+﻿function postInfo() {
     let username = $("input[name='registerusername']").val(); //用户名
     let password = $("input[name='registerpassword']").val(); //密码
     let useremail = $("input[name='registeremail']").val(); //账号
@@ -97,7 +97,7 @@ function logout() {
 //忘记密码的操作
 function forgetpass() {
     let email = $("input[name='forgetemail']").val();
-    let url = 'http://47.93.200.205:8080/forget/password';
+    let url = 'http://47.93.200.205:8080/user/forget/password';
     $.ajax({
         url: `${url}`,
         type: 'POST',
@@ -122,7 +122,7 @@ function passresert() {
     let password = $('#password2').val();
     let vcode = $('#vcode').val();
     console.log(vcode)
-    let url = 'http://47.93.200.205:8080/forget/resert';
+    let url = 'http://47.93.200.205:8080/user/forget/resert';
 
     $.ajax({
         url: `${url}`,
@@ -238,9 +238,9 @@ function setNewPassword(){
         },
         success:function(data){
             if(data.code === 0){
-                console.log(data.msg)
+                alert(data.msg)
             }else{
-                console.log(data.msg)
+                alert(data.msg)
             }
         }
     })
